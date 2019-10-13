@@ -5,7 +5,7 @@ Patsanskie quotes generator with N-Gram model. Dataset was collected from the fo
 - [Пацанские цитаты №1](https://vk.com/krutiecitati)
 - [пацанские цитаты и попуги](https://vk.com/tupopopugai) (more from this)
 
-## Usage:
+## Usage
 
 ### Get dataset(if you need to):
 
