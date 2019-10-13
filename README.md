@@ -1,5 +1,9 @@
 # Quotes generator
-Patsanskie quotes generator with N-Gram model
+Patsanskie quotes generator with N-Gram model. Dataset was collected from the following groups in vk:
+
+- [Пацанские цитаты©](https://vk.com/public27456813)
+- [Пацанские цитаты №1](https://vk.com/krutiecitati)
+- [пацанские цитаты и попуги](https://vk.com/tupopopugai) (more from this)
 
 ## Usage:
 
