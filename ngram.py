@@ -1,5 +1,6 @@
 import random
 import re
+import json
 
 def normalize_line(line):
     res = line.strip()
@@ -11,6 +12,19 @@ class NGram():
         self.n = n
         self.prior = {}
         self.prob = {}
+    
+    def save(self, filename):
+        with open(filename, "w", encoding="utf-8") as f:
+            f.write(json.dumps({
+                "prior": self.prior,
+                "prob": self.prob
+            }))
+
+    def load(self, filename):
+        with open(filename, "r", encoding="utf-8") as f:
+            data = json.loads(f.read())
+            self.prior = data["prior"]
+            self.prob = data["prob"]
     
     def train(self, dataset_filename):
         transitions = {}

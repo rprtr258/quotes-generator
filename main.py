@@ -9,11 +9,12 @@ WORDS_BAG_SIZE = 3
 def train():
     model = NGram(WORDS_BAG_SIZE)
     model.train("dataset")
-    for _ in range(50):
-        print(model.generate())
+    model.save("model.json")
 
 def generate():
-    pass
+    model = NGram(WORDS_BAG_SIZE)
+    model.load("model.json")
+    print(model.generate())
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
