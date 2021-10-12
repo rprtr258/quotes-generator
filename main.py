@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import sys; sys.stdout.reconfigure(encoding="utf-8")
 from argparse import ArgumentParser, FileType
 
 from ngram import NGram
@@ -14,6 +13,8 @@ def train(dataset_fd, model_fd):
     model.save(model_fd)
 
 def generate(model_fd):
+    import sys; sys.stdout.reconfigure(encoding="utf-8")
+
     model = NGram(WORDS_BAG_SIZE)
     model.load(model_fd)
     print(model.generate())
