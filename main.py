@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from argparse import ArgumentParser, FileType
+from argparse import ArgumentParser
 
 from ngram import NGram
 
@@ -32,14 +32,14 @@ if __name__ == "__main__":
     parser_train.add_argument(
         "-d",
         "--dataset",
-        type=FileType("r", encoding="utf-8"),
+        type=str,
         help="dataset to use for training",
         required=True,
     )
     parser_train.add_argument(
         "-m",
         "--model",
-        type=FileType("w", encoding="utf-8"),
+        type=str,
         help="file to save model to",
         required=True,
     )
@@ -50,7 +50,7 @@ if __name__ == "__main__":
     parser_generate.add_argument(
         "-m",
         "--model",
-        type=FileType("r", encoding="utf-8"),
+        type=str,
         help="json model to use for generation",
         required=True,
     )

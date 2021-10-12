@@ -4,45 +4,48 @@ import json
 
 class NGram():
     def __init__(self, n):
-        assert(n >= 1)
+        assert n >= 1, "size of n-gram must be at leat 1"
         self.n = n
         self.prior = {}
         self.prob = {}
     
-    def save(self, model_fd):
-        model_fd.write(json.dumps({
-            "prior": self.prior,
-            "prob": self.prob
-        }))
+    def save(self, model_file):
+        with open(model_file, "w", encoding="utf-8") as fd:
+            fd.write(json.dumps({
+                "prior": self.prior,
+                "prob": self.prob
+            }))
 
-    def load(self, model_fd):
-        data = json.loads(model_fd.read())
-        self.prior = data["prior"]
-        self.prob = data["prob"]
+    def load(self, model_file):
+        with open(model_file, "r", encoding="utf-8") as fd:
+            data = json.loads(fd.read())
+            self.prior = data["prior"]
+            self.prob = data["prob"]
     
-    def train(self, dataset_fd):
+    def train(self, dataset_file):
         transitions = {}
         count = {}
-        for line in dataset_fd:
-            line = line.strip()
-            words = line.split()
-            B = " ".join(words[:self.n - 1])
-            if not B in self.prior:
-                self.prior[B] = 0
-            self.prior[B] += 1
-            for i in range(0, len(words) - self.n + 1):
-                B = " ".join(words[i : i + self.n - 1])
-                A = words[i + self.n - 1]
-                if not B in transitions:
-                    transitions[B] = []
-                if not f"{B} {A}" in count:
-                    count[f"{B} {A}"] = 0
-                if not B in count:
-                    count[B] = 0
-                count[f"{B} {A}"] += 1
-                count[B] += 1
-                if not A in transitions[B]:
-                    transitions[B].append(A)
+        with open(dataset_file, "r", encoding="utf-8") as fd:
+            for line in fd:
+                line = line.strip()
+                words = line.split()
+                B = " ".join(words[:self.n - 1])
+                if not B in self.prior:
+                    self.prior[B] = 0
+                self.prior[B] += 1
+                for i in range(0, len(words) - self.n + 1):
+                    B = " ".join(words[i : i + self.n - 1])
+                    A = words[i + self.n - 1]
+                    if not B in transitions:
+                        transitions[B] = []
+                    if not f"{B} {A}" in count:
+                        count[f"{B} {A}"] = 0
+                    if not B in count:
+                        count[B] = 0
+                    count[f"{B} {A}"] += 1
+                    count[B] += 1
+                    if not A in transitions[B]:
+                        transitions[B].append(A)
         for B in transitions.keys():
             self.prob[B] = {}
             for A in transitions[B]:
