@@ -2,10 +2,6 @@ import random
 import re
 import json
 
-def normalize_line(line):
-    res = line.strip()
-    return res
-
 class NGram():
     def __init__(self, n):
         assert(n >= 1)
@@ -13,43 +9,40 @@ class NGram():
         self.prior = {}
         self.prob = {}
     
-    def save(self, filename):
-        with open(filename, "w", encoding="utf-8") as f:
-            f.write(json.dumps({
-                "prior": self.prior,
-                "prob": self.prob
-            }))
+    def save(self, model_fd):
+        model_fd.write(json.dumps({
+            "prior": self.prior,
+            "prob": self.prob
+        }))
 
-    def load(self, filename):
-        with open(filename, "r", encoding="utf-8") as f:
-            data = json.loads(f.read())
-            self.prior = data["prior"]
-            self.prob = data["prob"]
+    def load(self, model_fd):
+        data = json.loads(model_fd.read())
+        self.prior = data["prior"]
+        self.prob = data["prob"]
     
-    def train(self, dataset_filename):
+    def train(self, dataset_fd):
         transitions = {}
         count = {}
-        with open(dataset_filename, "r", encoding="utf-8") as f:
-            for line in f:
-                line = normalize_line(line)
-                words = line.split()
-                B = " ".join(words[:self.n - 1])
-                if not B in self.prior:
-                    self.prior[B] = 0
-                self.prior[B] += 1
-                for i in range(0, len(words) - self.n + 1):
-                    B = " ".join(words[i : i + self.n - 1])
-                    A = words[i + self.n - 1]
-                    if not B in transitions:
-                        transitions[B] = []
-                    if not f"{B} {A}" in count:
-                        count[f"{B} {A}"] = 0
-                    if not B in count:
-                        count[B] = 0
-                    count[f"{B} {A}"] += 1
-                    count[B] += 1
-                    if not A in transitions[B]:
-                        transitions[B].append(A)
+        for line in dataset_fd:
+            line = line.strip()
+            words = line.split()
+            B = " ".join(words[:self.n - 1])
+            if not B in self.prior:
+                self.prior[B] = 0
+            self.prior[B] += 1
+            for i in range(0, len(words) - self.n + 1):
+                B = " ".join(words[i : i + self.n - 1])
+                A = words[i + self.n - 1]
+                if not B in transitions:
+                    transitions[B] = []
+                if not f"{B} {A}" in count:
+                    count[f"{B} {A}"] = 0
+                if not B in count:
+                    count[B] = 0
+                count[f"{B} {A}"] += 1
+                count[B] += 1
+                if not A in transitions[B]:
+                    transitions[B].append(A)
         for B in transitions.keys():
             self.prob[B] = {}
             for A in transitions[B]:
