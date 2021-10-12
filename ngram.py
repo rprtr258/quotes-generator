@@ -55,11 +55,14 @@ class NGram():
             for A in transitions[B]:
                 self.prob[B][A] = count[f"{B} {A}"] / count[B]
 
-    def generate(self, length=100):
-        begin = random.choices(list(self.prior.keys()), weights=self.prior.values())
-        begin = begin[0].split()
+    def generate(self, begin=None, length=100):
+        if begin is None:
+            begin = random.choices(list(self.prior.keys()), weights=self.prior.values())
+            begin = begin[0].split()
+        else:
+            begin = begin[0].split()
         res = begin
-        for _ in range(length - 1):
+        for _ in range(length):
             B = " ".join(res[-self.n + 1:])
             if B not in self.prob:
                 break
@@ -67,3 +70,4 @@ class NGram():
             A = random.choices(list(self.prob[B].keys()), weights=distribution)
             res += A
         return " ".join(res)
+

@@ -3,6 +3,8 @@ import sys
 
 from ngram import NGram
 
+
+sys.stdout.reconfigure(encoding="utf-8")
 WORDS_BAG_SIZE = 3
 
 
