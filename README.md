@@ -1,12 +1,4 @@
 # Quotes generator
-Patsanskie quotes generator with N-Gram model. Dataset was collected from the following groups in vk:
-
-- [Пацанские цитаты©](https://vk.com/public27456813)
-- [Пацанские цитаты №1](https://vk.com/krutiecitati)
-- [пацанские цитаты и попуги](https://vk.com/tupopopugai) (more from this)
-
-Vanilla quotes were collected from
-- [Самые ванильные цитаты (500 цитат)](https://citatnica.ru/citaty/samye-vanilnye-tsitaty-500-tsitat)
 
 ## Usage
 
@@ -29,3 +21,14 @@ python3 main.py train
 ```bash
 python3 main.py generate
 ```
+
+## Datasets
+Patsanskie quotes generator with N-Gram model. Dataset was collected from the following groups in vk:
+
+- [Пацанские цитаты©](https://vk.com/public27456813)
+- [Пацанские цитаты №1](https://vk.com/krutiecitati)
+- [пацанские цитаты и попуги](https://vk.com/tupopopugai) (more from this)
+
+Vanilla quotes were collected from
+- [Самые ванильные цитаты (500 цитат)](https://citatnica.ru/citaty/samye-vanilnye-tsitaty-500-tsitat)
+
