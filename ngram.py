@@ -25,22 +25,21 @@ class NGram():
             self.prob = data["prob"]
     
     def train(self, dataset_file):
-        transitions = defaultdict(list)
+        from tqdm import tqdm
+        transitions = defaultdict(set)
         count = defaultdict(int)
         with open(dataset_file, "r", encoding="utf-8") as fd:
-            for line in fd:
+            for line in tqdm(fd):
                 words = line.strip().split()
                 B = " ".join(words[:self.n - 1])
                 self.prior[B] += 1
-                for i in range(0, len(words) - self.n + 1):
+                for i in tqdm(range(0, len(words) - self.n + 1)):
                     B = " ".join(words[i : i + self.n - 1])
+                    self.prior[B] += 1
                     A = words[i + self.n - 1]
-                    if not f"{B} {A}" in count:
-                        count[f"{B} {A}"] = 0
                     count[f"{B} {A}"] += 1
                     count[B] += 1
-                    if not A in transitions[B]:
-                        transitions[B].append(A)
+                    transitions[B].add(A)
         self.prob = {
             B: {
                 A: count[f"{B} {A}"] / count[B]
